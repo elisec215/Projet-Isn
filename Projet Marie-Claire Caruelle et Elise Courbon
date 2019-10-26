@@ -252,7 +252,6 @@ def ToutRedessinner(canvas):
 
 def DessinerGrille(canvas):
 
-    #s = StringVar(root, canvas.data["mouvement"])
 
 
     stationnement_voiture = canvas.data["stationnement_voiture"]
@@ -274,12 +273,12 @@ def DessinerGrille(canvas):
     canvas.create_text((335, 690), fill="white", font="Times 15  bold",
                        text="Appuyez sur r pour recommencer et sur n pour passer au niveau suivant.")
     canvas.create_text((300, 10), fill="white", font="Times 15  bold", text='Il vous reste ' + str(canvas.data["difficulte"] - canvas.data["mouvement"]) + ' mouvements!')
-    #canvas.create_text((200, 300), fill="black", font="Times 15  bold", text='Vous avez fait' + str(canvas.data["mouvement"]) + ' mouvement')
 
-""" Cette fonction nous permet de """
+
+""" Cette fonction nous permet de dessiner une case puis d'insérer les images correspondantes aux coordonnées"""
 
 def DessinerCaseVoiture(canvas, stationnement_voiture, ran, col):
-    """ Cette fonction nous permet de """
+
     marge = 20
     TailleCell = 100
 
@@ -295,22 +294,18 @@ def DessinerCaseVoiture(canvas, stationnement_voiture, ran, col):
 
     if (stationnement_voiture[ran][col] ==2):
 
-  #      canvas.create_oval(Gauche, Haut, Droite, Bas, fill="blue")
         canvas.create_image(Gauche, Haut, image = canvas.data["voiture_bleue"], anchor='nw')
 
 
 
     if (stationnement_voiture[ran][col] ==-1):
 
-  #      canvas.create_rectangle(Gauche, Haut, Droite, Bas, fill="green")
         canvas.create_image(Gauche, Haut, image = canvas.data["exit"], anchor='nw')
 
 
 
     if (stationnement_voiture[ran][col] ==1):
 
-    #canvas.create_oval(Gauche, Haut, Droite, Bas, fill="yellow")
-       #voiture_rouge = imgTk.PhotoImage(image=im, size=(100, 100))
         canvas.create_image(Gauche, Haut, image = canvas.data["voiture_rouge"], anchor='nw')
 
 def Instructions():
