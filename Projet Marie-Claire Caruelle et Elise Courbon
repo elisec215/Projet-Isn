@@ -1,83 +1,82 @@
 from tkinter import *
+import PIL.Image as img
+import PIL.ImageTk as imgTk
 
 
 
-def StationnementVoiture(canvas):
+def stationnement_voiture(canvas):
+    """0: la place est vide
 
-     """0: la place est vide
+    1: la place est occupée
 
-     1: la place est occupée
+    -1: la porte de sortie
 
-     -1: la porte de sortie
+    2: notre position
 
-     2: notre position
-
-      Cette fonction nous indique la position des voitures sur la grille, en fonction du niveau 1 """
-
+     Cette fonction nous indique la position des voitures sur la grille, en fonction du niveau 1 """
 
 
     stationnement_voiture = [[0] * 6 for _ in range(6)]
-
-
     stationnement_voiture[2][5] = -1
-
     stationnement_voiture[0][0] = 2
-
     stationnement_voiture[3][3] = 1
-
     stationnement_voiture[2][3] = 1
-
     stationnement_voiture[4][1] = 1
 
+    canvas.data["stationnement_voiture"] = stationnement_voiture
+    canvas.data["mouvement"] = 0
+    canvas.data["difficulte"] = 7
 
+    canvas.data["voiture_rouge"] = img.open('voitureRhorizontal.jpg').resize((100,100), img.ANTIALIAS)
+    canvas.data["voiture_rouge"] = imgTk.PhotoImage(image=canvas.data["voiture_rouge"])
 
+    canvas.data["voiture_bleue"] = img.open('voitureBhorizontal.jpg').resize((100,100), img.ANTIALIAS)
+    canvas.data["voiture_bleue"] = imgTk.PhotoImage(image=canvas.data["voiture_bleue"])
 
-
-    canvas.data["stationnement.voiture"] = stationnement_voiture
+    canvas.data["exit"] = img.open('image.png').resize((100,100), img.ANTIALIAS)
+    canvas.data["exit"] = imgTk.PhotoImage(image=canvas.data["exit"])
 
     TrouverVoiture(canvas)
 
 
 
 
+def stationnement_voiture2(canvas):
+    """# 0: la place est vide
 
-def StationnementVoiture2(canvas):
+        # 1: la place est occupée
 
-"""# 0: la place est vide
+        # -1: la porte de sortie
 
-    # 1: la place est occupée
+        # 2: notre position
 
-    # -1: la porte de sortie
+        Cette fonction nous indique la position des voitures sur la grille, en fonction du niveau 2"""
 
-    # 2: notre position
-
-    Cette fonction nous indique la position des voitures sur la grille, en fonction du niveau 2"""
-
-
-
-    StationnementVoiture = [[0] * 6 for _ in range(6)]
-
-    StationnementVoiture[2][5] = -1
-
-    StationnementVoiture[0][0] = 2
-
-    StationnementVoiture[0][3] = 1
-
-    StationnementVoiture[0][1] = 1
-
-    StationnementVoiture[0][2] = 1
-
-    StationnementVoiture[2][3] = 1
-
-    StationnementVoiture[4][3] = 1
-
-    StationnementVoiture[1][5] = 1
+    stationnement_voiture = [[0] * 6 for _ in range(6)]
+    stationnement_voiture[2][5] = -1
+    stationnement_voiture[0][0] = 2
+    stationnement_voiture[0][3] = 1
+    stationnement_voiture[0][1] = 1
+    stationnement_voiture[0][2] = 1
+    stationnement_voiture[2][3] = 1
+    stationnement_voiture[4][3] = 1
+    stationnement_voiture[1][5] = 1
 
 
 
 
 
-    canvas.data["StationnementVoiture"] = Stationnement_Voiture
+    canvas.data["stationnement_voiture"] = stationnement_voiture
+    canvas.data["mouvement"] = 0
+    canvas.data["difficulte"] = 7
+
+    canvas.data["voiture_rouge"] = img.open('voitureRhorizontal.jpg').resize((100,100), img.ANTIALIAS)
+    canvas.data["voiture_rouge"] = imgTk.PhotoImage(image=canvas.data["voiture_rouge"])
+
+    canvas.data["voiture_bleue"] = img.open('voitureBhorizontal.jpg').resize((100,100), img.ANTIALIAS)
+    canvas.data["voiture_bleue"] = imgTk.PhotoImage(image=canvas.data["voiture_bleue"])
+
+
     TrouverVoiture(canvas)
 
 
@@ -87,11 +86,11 @@ def TrouverVoiture(canvas):
     """ Cette fonction nous permet de trouvez l'emplcament de la voiture,  en foncion de la rangée [ran] et la colonne [col],
     et de stocker cet emplacement au debut de la rangee et au debut de la colonne  (head Row, head Col) """
 
-    Stationnement_Voiture = canvas.data["Stationnement_Voiture"]
+    stationnement_voiture = canvas.data["stationnement_voiture"]
 
-    Rans = len(Stationnement_Voiture)
+    rans = len(stationnement_voiture)
 
-    Cols = len(Stationnement_Voiture[0])
+    cols = len(stationnement_voiture[0])
 
     voitureRan = 0
 
@@ -101,7 +100,7 @@ def TrouverVoiture(canvas):
 
         for col in range(cols):
 
-            if Stationnement_Voiture[ran][col] == 2:
+            if stationnement_voiture[ran][col] == 2:
 
                 voitureRan = ran
 
@@ -115,27 +114,32 @@ def TrouverVoiture(canvas):
 
 
 
-def deplacementVoiture(canvas, ran, col ): #d
+def deplacementvoiture(canvas, ran, col ): #d
 
     """ Cette fonction nous permet de developper la voiture d'une case dans la direction voulu"""
 
-    Stationnement_Voiture = canvas.data["Stationnement_Voiture"]
+    stationnement_voiture = canvas.data["stationnement_voiture"]
 
-    rans = len(Stationnement_Voiture)
+    rans = len(stationnement_voiture)
 
-    cols = len(Stationnement_Voiture[0])
+    cols = len(stationnement_voiture[0])
 
     voitureRan = canvas.data["voitureRan"]
 
     voitureCol = canvas.data["voitureCol"]
 
+    difficulte = canvas.data["difficulte"]
+
+    mouvement = canvas.data["mouvement"]
+
     nouvellevoitureRan = voitureRan + ran #d
 
-    nouvellevoitureCol = voitureRan + col #d
+    nouvellevoitureCol = voitureCol + col #d
+
+    canvas.data["mouvement"] = canvas.data["mouvement"] + 1
 
 
-
-    if (nouvellevoitureCol<0) or (nouvellevoitureCol >= cols) or (nouvellevoitureRan<0) or (nouvellevoitureRan >= rows):
+    if (nouvellevoitureCol<0) or (nouvellevoitureCol >= cols) or (nouvellevoitureRan<0) or (nouvellevoitureRan >= rans) or (mouvement+1>difficulte):
 
         canvas.data["Perdu"] = True
 
@@ -145,29 +149,29 @@ def deplacementVoiture(canvas, ran, col ): #d
 
 
 
-        if (Stationnement_Voiture[nouvellevoitureRan][nouvellevoitureCol] == 0):
+        if (stationnement_voiture[nouvellevoitureRan][nouvellevoitureCol] == 0):
 
-            Stationnement_Voiture[nouvellevoitureRan][nouvellevoitureCol] = 2
+            stationnement_voiture[nouvellevoitureRan][nouvellevoitureCol] = 2
 
-            Stationnement_Voiture[voitureRan][voitureCol] = 0
+            stationnement_voiture[voitureRan][voitureCol] = 0
 
-            canvas.data["carRow"] = nouvellevoitureRan
+            canvas.data["voitureRan"] = nouvellevoitureRan
 
-            canvas.data["carCol"] = nouvellevoitureCol
+            canvas.data["voitureCol"] = nouvellevoitureCol
 
 
 
-        elif (Stationnement_Voiture[nouvellevoitureRan][nouvellevoitureCol] == 1):
+        elif (stationnement_voiture[nouvellevoitureRan][nouvellevoitureCol] == 1):
 
             canvas.data["Perdu"] = True
 
 
 
-        elif (Stationnement_Voiture[nouvellevoitureRan][nouvellevoitureCol] == -1):
+        elif (stationnement_voiture[nouvellevoitureRan][nouvellevoitureCol] == -1):
 
-            Stationnement_Voiture[nouvellevoitureRan][nouvellevoitureColl] = 2
+            stationnement_voiture[nouvellevoitureRan][nouvellevoitureCol] = 2
 
-            Stationnement_Voiture[voitureRan][voitureCol] = 0
+            stationnement_voiture[voitureRan][voitureCol] = 0
 
             canvas.data["voitureRan"] = nouvellevoitureRan
 
@@ -179,17 +183,17 @@ def deplacementVoiture(canvas, ran, col ): #d
 
 
 
-def ToucheClavier(événement):
+def ToucheClavier(evenement):
 
-    canvas = événement.widget.canvas
+    canvas = evenement.widget.canvas
 
 
 
-    if (événement.char == "r"):
+    if (evenement.char == "r"):
 
         init(canvas)
 
-    if (événement.char == "n"):
+    if (evenement.char == "n"):
 
         init2(canvas)
 
@@ -197,30 +201,30 @@ def ToucheClavier(événement):
 
     if (canvas.data["Perdu"] == False) and (canvas.data["Gagné"] == False):
 
-        if (événement.keysym == "Haut"):
+        if (evenement.keysym == "Up"):
 
-            deplacementVoiture(canvas, -1, 0)
+            deplacementvoiture(canvas, -1, 0)
 
-        elif (événement.keysym == "Bas"):
+        elif (evenement.keysym == "Down"):
 
-            deplacementVoiture(canvas, +1, 0)
+            deplacementvoiture(canvas, +1, 0)
 
-        elif (événement.keysym == "Gauche"):
+        elif (evenement.keysym == "Left"):
 
-            deplacementVoiturer(canvas, 0,-1)
+            deplacementvoiture(canvas, 0,-1)
 
-        elif (événement.keysym == "Droite"):
+        elif (evenement.keysym == "Right"):
 
-            deplacementVoiture(canvas, 0,+1)
+            deplacementvoiture(canvas, 0,+1)
 
-        redrawAll(canvas)
+        ToutRedessinner(canvas)
 
 
 
 def ToutRedessinner(canvas):
     """ Cette fonction permet d'actualliser, le canvas a chaque intervention du joueur"""
 
-    canvas.supprime(tout)
+    canvas.delete(ALL)
 
     DessinerGrille(canvas)
 
@@ -248,24 +252,33 @@ def ToutRedessinner(canvas):
 
 def DessinerGrille(canvas):
 
-    Stationnement_Voiture = canvas.data["Stationnement_Voiture"]
+    #s = StringVar(root, canvas.data["mouvement"])
 
-    rans = len(Stationnement_Voiture)
 
-    cols = len(Stationnement_Voiture[0])
+    stationnement_voiture = canvas.data["stationnement_voiture"]
 
-    for ran in range(ran):
+    rans = len(stationnement_voiture)
+
+    cols = len(stationnement_voiture[0])
+
+    for ran in range(rans):
 
         for col in range(cols):
 
-            DessinerCaseVoiture(canvas, Stationnement_Voiture, row, col)
+            DessinerCaseVoiture(canvas, stationnement_voiture, ran, col)
 
+    canvas.create_text((335, 640), fill="black", font="Times 15  bold",
+                       text="Régles du jeu: Le but de ce jeu est de parvenir a la sortie en moins de mouvements possibles.")
+    canvas.create_text((325, 665), fill="black", font="Times 15  bold",
+                       text="Appuyez sur r pour recommencer; Appuyez sur n pour passer au niveau suivant.")
+    canvas.create_text((300, 10), fill="black", font="Times 15  bold", text='Il vous reste ' + str(canvas.data["difficulte"] - canvas.data["mouvement"]) + ' mouvement!')
+    #canvas.create_text((200, 300), fill="black", font="Times 15  bold", text='Vous avez fait' + str(canvas.data["mouvement"]) + ' mouvement')
 
-
-def DessinerCaseVoiture(canvas, Stationnement_Voiture, ran, col):
 """ Cette fonction nous permet de """
-    marge = 20
 
+def DessinerCaseVoiture(canvas, stationnement_voiture, ran, col):
+    """ Cette fonction nous permet de """
+    marge = 20
     TailleCell = 100
 
     Gauche = marge + col * TailleCell
@@ -278,25 +291,27 @@ def DessinerCaseVoiture(canvas, Stationnement_Voiture, ran, col):
 
     canvas.create_rectangle(Gauche, Haut, Droite, Bas, fill="white")
 
-    if (Stationnement_Voiture[row][col] ==2):
+    if (stationnement_voiture[ran][col] ==2):
 
-        canvas.create_oval(Gauche, Haut, Droite, Bas, fill="blue")
-
-
-
-    if (Stationnement_Voiture[row][col] ==-1):
-
-        canvas.create_rectangle(Gauche, Haut, Droite, Bas, fill="green")
+  #      canvas.create_oval(Gauche, Haut, Droite, Bas, fill="blue")
+        canvas.create_image(Gauche, Haut, image = canvas.data["voiture_bleue"], anchor='nw')
 
 
 
-    if (Stationnement_Voiture[row][col] ==1):
+    if (stationnement_voiture[ran][col] ==-1):
 
-        canvas.create_oval(Gauche, Haut, Droite, Bas, fill="yellow")
+  #      canvas.create_rectangle(Gauche, Haut, Droite, Bas, fill="green")
+        canvas.create_image(Gauche, Haut, image = canvas.data["exit"], anchor='nw')
 
 
 
-def Intructions():
+    if (stationnement_voiture[ran][col] ==1):
+
+    #canvas.create_oval(Gauche, Haut, Droite, Bas, fill="yellow")
+       #voiture_rouge = imgTk.PhotoImage(image=im, size=(100, 100))
+        canvas.create_image(Gauche, Haut, image = canvas.data["voiture_rouge"], anchor='nw')
+
+def Instructions():
 
     print ("Sortez la voiture du parking!")
 
@@ -308,29 +323,29 @@ def Intructions():
 
 
 
-def initialisation(canvas):
+def init(canvas):
 
-    printInstructions()
+    Instructions()
 
     canvas.data["Perdu"] = False
 
     canvas.data["Gagné"] = False
 
-    StationnementVoiture(canvas)
+    stationnement_voiture(canvas)
 
     ToutRedessinner(canvas)
 
 
 
-def initialisation2(canvas):
+def init2(canvas):
 
-    printInstructions()
+    Instructions()
 
     canvas.data["Perdu"] = False
 
     canvas.data["Gagné"] = False
 
-    StationnementVoiture2(canvas)
+    stationnement_voiture2(canvas)
 
     ToutRedessinner(canvas)
 
@@ -340,31 +355,24 @@ def initialisation2(canvas):
 
 ##########################################################################
 
-def Fonctionne():
+
+
+def run():
 
     root = Tk()
-
-    """ Cette fonction permet d'abord la création du canvas et ensuite
-     d'enregistrer ce canvas pour qu'on le rappel a chaque fois qu'on 
-     l'utilise (# Store canvas in root and in canvas itself for callbacks) """"
-
-    canvas = Canvas(root, bg="light grey", width=800, height=800)
-
+    canvas = Canvas(root, bg="light grey", width=650, height=700)
     canvas.pack()
-
-
     root.canvas = canvas.canvas = canvas
-
     canvas.data = {}
+    init(canvas)
 
-    initialisation(canvas)
-
-    root.bind("<Key>", keyPressed)
+    root.bind("<Key>", ToucheClavier)
+    bouton_fermer = Button(root, text="fermer", command=root.quit)
+    bouton_fermer.pack()
 
 
 
     root.mainloop()
 
 
-
-Fonctionne()
+run()
